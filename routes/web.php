@@ -1,14 +1,30 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth; // Correct way to use Auth facade
-
 use App\Http\Controllers\AuthController;
-use App\Http\Livewire\AuthorsTable;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
+#use App\Http\Livewire\AuthorsTable;
+use Inertia\Inertia;
 
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+// Define a logout route
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Authentication routes
 Route::get('login', [AuthController::class, 'showLogin'])->name('auth.login');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
 // Livewire authors route (uncomment if required)
 # Route::get('authors', AuthorsTable::class)->name('authors.index');
+
+Route::resource('authors', AuthorController::class);
+
+Route::resource('books', BookController::class);

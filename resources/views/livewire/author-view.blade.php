@@ -10,9 +10,9 @@
         <tbody>
             @foreach($authors as $author)
                 <tr>
-                    <td>{{ $author['name'] }}</td>
+                    <td>{{ $author['first_name'] }}{{ $author['last_name'] }}</td>
                     <td>
-                        <a href="{{ route('author.show', $author['id']) }}">View Books</a>
+                        {{-- <a href="{{ route('author.show', $author['id']) }}">View Books</a> --}}
                         <button wire:click="deleteAuthor({{ $author['id'] }})">Delete</button>
                     </td>
                 </tr>

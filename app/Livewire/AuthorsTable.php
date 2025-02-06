@@ -26,6 +26,23 @@ class AuthorsTable extends Component
         // Fetch authors from API
         $this->authors = $this->apiService->getAuthors($token);
     }
+    public function delete($authorId)
+    {
+        dd($authorId);
+        $token = session('api_token');
+
+        // Call your API service to delete the author
+        $response = $this->apiService->deleteAuthor($authorId, $token);
+
+        // Check if deletion was successful
+        if ($response->status == 'success') {
+            // If successful, remove the author from the authors array
+            $this->authors = collect($this->authors)->where('id', '!=', $authorId)->values()->toArray();
+            session()->flash('message', 'Author deleted successfully!');
+        } else {
+            session()->flash('error', 'Failed to delete the author.');
+        }
+    }
 
     public function render()
     {

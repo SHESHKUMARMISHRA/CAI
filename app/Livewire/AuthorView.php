@@ -12,7 +12,7 @@ class AuthorView extends Component
     public function mount()
     {
         $this->authors = Http::withToken(session('api_token'))
-                             ->get('https://candidate-testing.api.royal-apps.io/api/authors')
+                             ->get('https://candidate-testing.api.royal-apps.io/api/v2/authors')
                              ->json();
     }
     public function render()

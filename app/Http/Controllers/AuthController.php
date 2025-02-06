@@ -28,8 +28,17 @@ class AuthController extends Controller
         
         //dd($token);
         // Store token in session
-        Session::put('api_token', $token->access_token);
+        Session::put('api_token', $token['token_key']);
 
         return redirect()->route('authors.index');
+    }
+
+    public function logout(Request $request)
+    {
+        // Perform the logout
+        Session::flush();
+
+        // Redirect to login or any other page
+        return redirect()->route('auth.login');  // Adjust as necessary
     }
 }

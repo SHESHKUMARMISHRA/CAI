@@ -19,7 +19,7 @@ class ApiService
     {
         try {
             $client = new Client();
-            $response = $client->get('https://candidate-testing.api.royal-apps.io/login', [
+            $response = $client->post('https://candidate-testing.api.royal-apps.io/api/v2/token', [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
@@ -42,12 +42,34 @@ class ApiService
 
     public function getAuthors($token)
     {
-        $response = $this->client->get($this->baseUri . '/authors', [
+        $response = $this->client->get($this->baseUri . '/api/v2/authors', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
             ],
         ]);
 
         return json_decode($response->getBody()->getContents());
+    }
+
+    public function getBooks($token)
+    {
+        $response = $this->client->get($this->baseUri . '/api/v2/books', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function deleteAuthor($authorId, $token)
+    {
+        $response = $this->client->delete($this->baseUri . '/api/v2/authors/' . $authorId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+            ],
+        ]);
+
+        return json_decode($response->getBody());
     }
 }
