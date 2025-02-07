@@ -23,6 +23,17 @@ class BookController extends Controller
         // Assuming $response is an object and has an 'items' property
         $books = $response->items;  // Correctly accessing the 'items' property
         //dd($books);
-        return view('livewire.books-table', compact('books'));
+        return view('books-table', compact('books'));
+    }
+
+    public function destroy($bookId)
+    {
+        $token = Session::get('api_token');
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized action.'], 401);
+        }
+
+        return $this->apiService->deleteBook($bookId, $token);        
     }
 }

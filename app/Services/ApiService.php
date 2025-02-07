@@ -29,7 +29,7 @@ class ApiService
                     'password' => $password,
                 ],
             ]);
-    
+
             return json_decode($response->getBody(), true);
         } catch (RequestException $e) {
             return [
@@ -64,12 +64,59 @@ class ApiService
 
     public function deleteAuthor($authorId, $token)
     {
-        $response = $this->client->delete($this->baseUri . '/api/v2/authors/' . $authorId, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-            ],
-        ]);
+        try {
+            $response = $this->client->delete($this->baseUri . '/api/v2/authors/' . $authorId, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                ],
+            ]);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode == 200 || $statusCode == 204) {
+                return response()->json([
+                    'message' => 'Book deleted successfully!',
+                    'status' => $statusCode
+                ], $statusCode);
+            }
 
-        return json_decode($response->getBody());
+            return response()->json([
+                'error' => 'Failed to delete the book.',
+                'status' => $statusCode
+            ], $statusCode);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong!',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteBook($bookId, $token)
+    {
+        try {
+            $response = $this->client->delete($this->baseUri . '/api/v2/books/' . $bookId, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                ],
+            ]);
+            $statusCode = $response->getStatusCode();
+
+            // If deletion is successful, return a JSON response with the status code
+            if ($statusCode == 200 || $statusCode == 204) {
+                return response()->json([
+                    'message' => 'Book deleted successfully!',
+                    'status' => $statusCode
+                ], $statusCode);
+            }
+
+            return response()->json([
+                'error' => 'Failed to delete the book.',
+                'status' => $statusCode
+            ], $statusCode);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong!',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
-#use App\Http\Livewire\AuthorsTable;
+
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -22,8 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('login', [AuthController::class, 'showLogin'])->name('auth.login');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
-// Livewire authors route (uncomment if required)
-# Route::get('authors', AuthorsTable::class)->name('authors.index');
+
 
 Route::resource('authors', AuthorController::class);
 

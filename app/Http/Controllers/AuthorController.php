@@ -22,7 +22,7 @@ class AuthorController extends Controller
         // Assuming $response is an object and has an 'items' property
         $authors = $response->items;  // Correctly accessing the 'items' property
         //dd($authors);
-        return view('livewire.authors-table', compact('authors'));
+        return view('authors-table', compact('authors'));
     }
 
     public function show($id)
@@ -37,8 +37,21 @@ class AuthorController extends Controller
         $author = collect($authorsArray)->firstWhere('id', $id);
 
         //dd($author);
-        return view('livewire.profile', compact('author'));
+        return view('author-view', compact('author'));
     }
 
+    public function destroy($authorId)
+    {
+        $token = Session::get('api_token');
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized action.'], 401);
+        }
+
+       return $this->apiService->deleteAuthor($authorId, $token);
+       
+    }
+
+    
     
 }

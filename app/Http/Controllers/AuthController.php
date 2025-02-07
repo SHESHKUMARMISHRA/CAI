@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function showLogin()
     {
-        return view('livewire.auth.login'); // Use correct path
+        return view('auth.login'); // Use correct path
     }
     
 
