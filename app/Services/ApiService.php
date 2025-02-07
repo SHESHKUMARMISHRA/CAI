@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Contracts\Session\Session;
 
 class ApiService
 {
@@ -39,6 +40,30 @@ class ApiService
             ];
         }
     }
+
+    public function addAuthor($token, array $data)
+    {
+        $token = \Cache::get('api_token'); // Retrieve token from session
+
+        if (!$token) {
+            throw new \Exception('API Token is missing.');
+        }
+
+        try {
+            $response = $this->client->post($this->baseUri . '/api/v2/authors', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type'  => 'application/json',
+                ],
+                'json' => $data, // Send data as JSON
+            ]);
+
+            return json_decode($response->getBody()->getContents());
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            return json_decode($e->getResponse()->getBody()->getContents());
+        }
+    }
+
 
     public function getAuthors($token)
     {

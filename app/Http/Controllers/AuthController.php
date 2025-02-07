@@ -29,7 +29,7 @@ class AuthController extends Controller
         //dd($token);
         // Store token in session
         Session::put('api_token', $token['token_key']);
-
+        \Cache::put('api_token', $token['token_key'], now()->addMinutes(60));
         return redirect()->route('authors.index');
     }
 
