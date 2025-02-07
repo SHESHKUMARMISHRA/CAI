@@ -67,19 +67,54 @@ class ApiService
     public function addBook($token, array $data)
     {
         try {
-             $response = $this->client->post($this->baseUri . '/api/v2/books', [
+            $response = $this->client->post($this->baseUri . '/api/v2/books', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
                     'Content-Type'  => 'application/json',
                 ],
                 'json' => $data, // Send data as JSON
             ]);
-
-            return json_decode($response->getBody()->getContents());
+    
+            // Get response body & status code
+            $body = json_decode($response->getBody()->getContents(), true);
+            $statusCode = $response->getStatusCode();
+    
+            return [
+                'status' => 'success',
+                'code' => $statusCode,
+                'data' => $body
+            ];
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return json_decode($e->getResponse()->getBody()->getContents());
+            // Handle 4xx errors
+            return [
+                'status' => 'error',
+                'code' => $e->getResponse()->getStatusCode(),
+                'message' => json_decode($e->getResponse()->getBody()->getContents(), true)
+            ];
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
+            // Handle 5xx errors
+            return [
+                'status' => 'error',
+                'code' => $e->getResponse()->getStatusCode(),
+                'message' => 'Server error occurred'
+            ];
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Handle network errors or connection issues
+            return [
+                'status' => 'error',
+                'code' => 0,
+                'message' => 'Network error: ' . $e->getMessage()
+            ];
+        } catch (\Exception $e) {
+            // Catch all other exceptions
+            return [
+                'status' => 'error',
+                'code' => 0,
+                'message' => 'Unexpected error: ' . $e->getMessage()
+            ];
         }
     }
+    
 
     public function getAuthors($token)
     {

@@ -51,9 +51,19 @@ class BookController extends Controller
         ];
 
         $token = Session::get('api_token');
+        if (!$token) {
+            return redirect()->route('books.create')->with('error', 'Authentication token is missing.');
+        }
+    
+        // Call API service
         $response = $this->apiService->addBook($token, $data);
-        //dd($response);
-        return redirect()->route('books.index')->with('success', 'Book added successfully!');
+    
+        // Handle API response
+        if ($response['status'] === 'success') {
+            return redirect()->route('books.index')->with('success', 'Book added successfully!');
+        } else {
+            return redirect()->route('books.create')->with('error', 'Failed to add book: ' . json_encode($response['message']));
+        }
 
     }
 
