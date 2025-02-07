@@ -19,3 +19,6 @@ php artisan make:service ApiService
 # Run migrations
 # php artisan migrate 
 
+# Add new author >>  Run below CLI command
+eg.
+php artisan author:add "Shesh" "Mishra" "2025-02-07T16:39:11.213Z" "Developer" "male" "India"
