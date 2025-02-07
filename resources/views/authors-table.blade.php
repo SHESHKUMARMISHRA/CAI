@@ -22,7 +22,7 @@
                     <td>{{ $author->first_name }}</td>
                     <td>{{ $author->last_name }}</td>
                     <th>{{ $author->gender }}</th>
-                    <td>{{ date('Y-m-d h:i:s',strtotime($author->birthday)) }}</td>
+                    <td>{{ date('m/d/Y H:i:s',strtotime($author->birthday)) }}</td>
                     <td>{{ $author->place_of_birth }}</td>
                     <td>
                         <a href="{{ route('authors.show', $author->id) }}" class="btn btn-info">View</a>
