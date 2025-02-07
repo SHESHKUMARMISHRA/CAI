@@ -5,7 +5,7 @@
 @section('content')
 <div>
     <h1>Books List</h1>
-
+    <a href="{{ route('books.create') }}" class="btn btn-success">Add New Book</a>
     <!-- Display flash message after deletion -->
     @if(session()->has('message'))
     <div class="alert alert-success">

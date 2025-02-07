@@ -20,7 +20,7 @@
             <td> {{ date('m/d/Y H:i:s',strtotime($author['birthday'])) }}</td>
             <td>{{ $author['gender'] }}</td>
             <td>{{ $author['place_of_birth'] }}</p>
-            <td> <a href="{{ route('books.show', $author['id']) }}">View Books</a></td>
+            <td> <a href="{{ route('books.index') }}">View Books</a></td>
         </tr>
         @else
         <tr>Author not found.</tr>
